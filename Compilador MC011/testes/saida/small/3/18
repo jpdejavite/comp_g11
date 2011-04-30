@@ -1,0 +1,17 @@
+class m 
+{
+    public static void main(String[] args )
+    {
+        {
+            if ( 10  < 20 )
+                if ( 10  < 20 )
+                    {
+                        System.out.println( 1 );
+                    }
+                else
+                    {
+                        System.out.println( 1 );
+                    }
+        }
+    }
+}

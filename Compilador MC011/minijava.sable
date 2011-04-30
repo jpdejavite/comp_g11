@@ -1,0 +1,303 @@
+Package minijava ;
+
+Helpers
+	all = [0 .. 0xFFFF];  
+    lowercase = ['a' .. 'z'];
+    uppercase = ['A' .. 'Z'];
+    digit = ['0' .. '9'];
+    hex_digit = [digit + [['a' .. 'f'] + ['A' .. 'F']]];
+
+    tab = 9;
+    cr = 13;
+    lf = 10;
+    eol = cr lf | cr | lf;
+
+    not_cr_lf = [all - [cr + lf]];
+    not_star = [all - '*'];
+    not_star_slash = [not_star - '/'];
+
+	white = (' ' | tab);
+    blank = (' ' | tab | eol)+;
+
+    short_comment = '//' not_cr_lf* eol;
+    long_comment = '/*' not_star* '*'+ (not_star_slash not_star* '*'+)* '/';
+    comment = short_comment | long_comment;
+
+    letter = lowercase | uppercase; 
+    id_part = letter (letter | '_' | digit)*;
+
+    
+Tokens
+	tok_number = digit+;
+	tok_lparen = '(';
+	tok_rparen = ')';
+	tok_lbracket = '[';
+	tok_rbracket = ']';
+	tok_lkey = '{';
+	tok_rkey = '}';
+	tok_if = 'if';
+	tok_else = 'else';
+	tok_class = 'class';
+	tok_public = 'public';
+	tok_static = 'static';
+	tok_void = 'void';
+	tok_main = 'main';
+	tok_string = 'String';
+	tok_int = 'int';
+	tok_intarray = 'int' white* '[' white* ']';
+	tok_boolean = 'boolean';
+	tok_extends = 'extends';
+	tok_semicolon = ';';
+	tok_comma = ',';
+	tok_dot = '.';
+	tok_return = 'return';
+	tok_while = 'while';
+	tok_syso = 'System.out.println';
+	tok_equal = '=';
+	tok_equals = '==';
+	tok_and = '&&';
+	tok_less = '<';
+	tok_plus = '+';
+	tok_minus = '-';
+	tok_times = '*';
+	tok_length = 'length';
+	tok_true = 'true';
+	tok_false = 'false';
+	tok_this = 'this';
+	tok_new = 'new';
+	tok_exclamation = '!';
+	tok_blank = blank;
+    tok_comment = comment;
+	tok_id = id_part;
+
+
+Ignored Tokens
+	tok_blank,
+	tok_comment;
+
+Productions
+	
+	prog { -> program }
+		= mainclass classdeclaration
+			{ -> New program(mainclass.main_class, [classdeclaration.class_decl]) } ;
+	
+	mainclass { -> main_class }
+		=	tok_class [left]:tok_id [flkey]:tok_lkey tok_public tok_static tok_void tok_main tok_lparen tok_string tok_lbracket tok_rbracket [right]:tok_id tok_rparen [slkey]:tok_lkey statement [frkey]:tok_rkey [srkey]:tok_rkey
+			 { -> New main_class(left, right, statement) };
+	
+	classdeclaration { -> class_decl* }
+		= {classextends} tok_class [left]:tok_id tok_extends [right]:tok_id tok_lkey vardeclaration methoddeclaration tok_rkey classdeclaration
+			{ -> [New class_decl(left,right,[vardeclaration.var_decl],[methoddeclaration.method_decl]), classdeclaration.class_decl] }
+		| {class} tok_class tok_id tok_lkey vardeclaration methoddeclaration tok_rkey classdeclaration
+			{ -> [New class_decl(tok_id,Null,[vardeclaration.var_decl],[methoddeclaration.method_decl]), classdeclaration.class_decl] }
+		| {empty} 
+			{ -> [] } ;
+		
+	vardeclaration { -> var_decl* }
+		= {vardeclaration} vardeclaration type tok_id tok_semicolon
+			{ -> [vardeclaration.var_decl , New var_decl(type, tok_id)] }
+		| {empty} 
+			{ -> [] } ;
+		
+	methoddeclaration { -> method_decl* }
+		= {methodparam} tok_public type tok_id tok_lparen paramlist tok_rparen tok_lkey vardeclaration statementlist tok_return expression tok_semicolon tok_rkey methoddeclaration
+			{ -> [New method_decl(type,tok_id,[paramlist.formal],[vardeclaration.var_decl],[statementlist.statement], expression.exp) , methoddeclaration.method_decl] }
+		| {empty} 
+			{ -> [] } ;
+	
+	paramlist { -> formal* }
+		= {paramlist} type tok_id params
+			{ -> [New formal(type, tok_id), params.formal] }
+		| {empty} 
+			{ -> [] } ;
+	
+	params { -> formal* }
+		= {params} tok_comma type tok_id params
+			{ -> [New formal(type, tok_id), params.formal] }
+		| {empty} 
+			{ -> [] } ;
+	
+	statementlist { -> statement* }
+		= {statementlist} statement statementlist
+			{ -> [statement.statement, statementlist.statement]}
+		| {empty} 
+			{ -> [] };
+	
+	type { -> type}	
+		= {intarray} tok_intarray
+			{ -> New type.array(tok_intarray) }
+		| {boolean} tok_boolean
+			{ -> New type.boolean(tok_boolean) }
+		| {int} tok_int
+			{ -> New type.int(tok_int) }
+		| {id} tok_id
+			{ -> New type.object(tok_id) };
+	
+	statement { -> statement }
+		= ifstatement
+			{ -> ifstatement.statement};
+
+	ifstatement { -> statement }
+		= {ifmatched} ifmatched
+			{ -> ifmatched.statement }
+		| {ifunmatched} ifunmatched
+			{ -> ifunmatched.statement };
+	
+	ifmatched { -> statement }
+		= {ifelse} tok_if tok_lparen expression tok_rparen [left]:ifmatched tok_else [rigth]:ifmatched
+			{ -> New statement.if(expression.exp,left.statement,rigth.statement, tok_if) }
+		| {other} otherstatement
+			{ -> otherstatement.statement };
+		
+	ifunmatched { -> statement }
+		= {if} tok_if tok_lparen expression tok_rparen [left]:statement
+			{ -> New statement.if(expression.exp,left.statement,Null, tok_if) }
+		| {ifelse} tok_if tok_lparen expression tok_rparen [left]:ifmatched tok_else [rigth]:ifunmatched
+			{ -> New statement.if(expression.exp,left.statement,rigth.statement, tok_if) };
+		
+
+
+	otherstatement { -> statement }	
+		= {statementlist} tok_lkey statementlist tok_rkey
+			{ -> New statement.block([statementlist.statement], tok_lkey) }
+		| {while} tok_while tok_lparen expression tok_rparen ifmatched
+			{ -> New statement.while(expression.exp,ifmatched.statement, tok_while) }
+		| {syso} tok_syso tok_lparen expression tok_rparen tok_semicolon
+			{ -> New statement.print(expression.exp, tok_syso) }
+		| {equal} tok_id tok_equal expression tok_semicolon
+			{ -> New statement.assign(tok_id, expression.exp) }
+		| {arrayequal} tok_id tok_lbracket [left]:expression tok_rbracket tok_equal [right]:expression tok_semicolon
+			{ -> New statement.array_assign(tok_id, left.exp, right.exp) };
+			
+		
+	otherexpression { -> exp }
+        = {identifier}    tok_id
+        	{ -> New exp.identifier(tok_id) }
+		| {number} tok_number
+			{ -> New exp.integer_literal(tok_number) }
+        | {true}    tok_true
+        	{ -> New exp.true(tok_true) }
+        | {false}   tok_false
+        	{ -> New exp.false(tok_false) }
+        | {this}    tok_this
+        	{ -> New exp.this(tok_this) }
+		| {paren}  tok_lparen expression tok_rparen
+			{ -> expression.exp }
+        | {array} otherexpression tok_lbracket expression tok_rbracket
+        	{ -> New exp.array_lookup(otherexpression.exp, expression.exp, tok_lbracket) }
+        | {length}  otherexpression tok_dot tok_length
+        	{ -> New exp.array_length(otherexpression.exp,tok_length) }
+        | {access} otherexpression tok_dot tok_id tok_lparen expressionlist tok_rparen
+        	{ -> New exp.call(otherexpression.exp, tok_id, [expressionlist.exp]) }
+        | {instance} tok_new tok_id tok_lparen tok_rparen
+        	{ -> New exp.new_object(tok_id) }
+		| {newarray} tok_new tok_int tok_lbracket expression tok_rbracket
+			{ -> New exp.new_array(expression.exp, tok_int) } ;
+			
+	notexpression { -> exp }
+    	= {notexpression}  tok_exclamation notexpression
+    		{ -> New exp.not(notexpression.exp, tok_exclamation) }
+    	| {next} otherexpression
+    		{ -> otherexpression.exp } ;
+		
+	timesexpression { -> exp }
+        = {timesexpression} timesexpression tok_times notexpression
+        	{ -> New exp.times(timesexpression.exp, notexpression.exp, tok_times) }
+        | {next} notexpression
+			{ -> notexpression.exp } ;
+            
+    pmexpression { -> exp }
+        = {plus}  pmexpression tok_plus timesexpression
+        	{ -> New exp.plus(pmexpression.exp, timesexpression.exp, tok_plus) }
+        | {minus} pmexpression tok_minus timesexpression
+        	{ -> New exp.minus(pmexpression.exp, timesexpression.exp, tok_minus) }
+        | {next}  timesexpression
+			{ -> timesexpression.exp } ;
+		
+	lessexpression { -> exp }
+        = {lessexpression} lessexpression tok_less pmexpression
+        	{ -> New exp.less_than(lessexpression.exp, pmexpression.exp, tok_less) }
+        | {next}    pmexpression
+        	{ -> pmexpression.exp } ;
+		
+	equalsexpression { -> exp } 
+		= {equalsexpression} equalsexpression tok_equals lessexpression
+        	{ -> New exp.equal(equalsexpression.exp, lessexpression.exp, tok_equals) }
+        | {next} lessexpression
+        	{ -> lessexpression.exp } ;
+		
+	expression { -> exp }
+        = {expression} expression tok_and equalsexpression
+        	{ -> New exp.and(expression.exp, equalsexpression.exp, tok_and) }
+        | {next} equalsexpression
+        	{ -> equalsexpression.exp } ;
+
+    expressionlist { -> exp* }
+        = {expressionlist} expression expressionrest
+        	{ -> [expression.exp, expressionrest.exp] }
+        | {empty}
+        	{ -> [] };
+
+    expressionrest { -> exp* }
+        = {expressionrest} tok_comma expression expressionrest
+        	{ -> [expression.exp, expressionrest.exp] }
+        | {empty} 
+        	{ -> [] };
+			
+		
+Abstract Syntax Tree
+
+	program
+		= main_class [classes]:class_decl*;
+	
+	main_class
+		= [name]:tok_id [main_args]:tok_id [statement]:statement;
+	
+	class_decl
+		= [name]:tok_id [super]:tok_id? [attributes]:var_decl* [methods]:method_decl*;
+	
+	var_decl
+		= type [name]:tok_id;
+		
+	method_decl
+		= [return_type]:type [name]:tok_id [formals]:formal* [locals]:var_decl* [body]:statement* [return_exp]:exp;
+	
+	formal
+		= type [name]:tok_id;
+	
+	type
+		= {array} [token]:tok_intarray
+		| {boolean} [token]:tok_boolean
+		| {int} [token]:tok_int
+		| {object} [name]:tok_id;
+	
+	statement
+		= {block} [statements]:statement* [token]:tok_lkey
+		| {if} [condition]:exp [then_clause]:statement [else_clause]:statement? [token]:tok_if
+		| {while} [condition]:exp [body]:statement [token]:tok_while
+		| {print} [value]:exp [token]:tok_syso
+		| {assign} [target]:tok_id [value]:exp
+		| {array_assign} [target]:tok_id [index]:exp [value]:exp;
+	
+	exp
+		= {and} [lhs]:exp [rhs]:exp [token]:tok_and
+		| {equal} [lhs]:exp [rhs]:exp [token]:tok_equals
+		| {less_than} [lhs]:exp [rhs]:exp [token]:tok_less
+		| {plus} [lhs]:exp [rhs]:exp [token]:tok_plus
+		| {minus} [lhs]:exp [rhs]:exp [token]:tok_minus
+		| {times} [lhs]:exp [rhs]:exp [token]:tok_times
+		| {array_lookup} [array]:exp [index]:exp [token]:tok_lbracket
+		| {array_length} [array]:exp [token]:tok_length
+		| {call} [object]:exp [method]:tok_id [actuals]:exp*
+		| {integer_literal} [value]:tok_number
+		| {true} [token]:tok_true
+		| {false} [token]:tok_false
+		| {this} [token]:tok_this
+		| {new_array} [size]:exp [token]:tok_int
+		| {new_object} [name]:tok_id
+		| {not} [value]:exp [token]:tok_exclamation
+		| {identifier} [name]:tok_id;
+
+		
+
+    

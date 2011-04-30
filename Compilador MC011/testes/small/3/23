@@ -1,0 +1,11 @@
+// testando operador && (lado esquerdo invalido)
+class m
+{
+   public static void main(String[] args)
+   {
+       if ( new m() && true )
+          System.out.println(1);
+          else
+      	System.out.println(1);
+   }
+}
