@@ -1,8 +1,12 @@
-package semant;
+package semant.firstpass;
 
 import errors.ErrorEchoer;
+import semant.Env;
+import syntaxtree.ClassDecl;
 import syntaxtree.Program;
+import syntaxtree.Statement;
 import syntaxtree.VisitorAdapter;
+import util.List;
 
 public class ProgramHandler extends VisitorAdapter {
 
@@ -14,7 +18,7 @@ public class ProgramHandler extends VisitorAdapter {
 		result = new Env(err);
 	}
 
-	static Env firstPass(ErrorEchoer err, Program p) {
+	public static Env firstPass(ErrorEchoer err, Program p) {
 
 		ProgramHandler h = new ProgramHandler(err);
 
@@ -27,6 +31,11 @@ public class ProgramHandler extends VisitorAdapter {
 		// classe principal
 		MainClassHandler.firstPass(result, node.mainClass);
 
-		// TODO: class decl list
+		// lista de declarações de classes
+		List<ClassDecl> classDeclList = node.classList;
+		while (classDeclList != null && classDeclList.head != null) {
+			ClassDeclHandler.firstPass(result, classDeclList.head);
+			classDeclList = classDeclList.tail;
+		}
 	}
 }

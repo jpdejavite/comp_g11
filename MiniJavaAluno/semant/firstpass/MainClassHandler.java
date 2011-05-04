@@ -1,12 +1,11 @@
-package semant;
+package semant.firstpass;
 
+import semant.Env;
 import symbol.ClassInfo;
 import symbol.Symbol;
 import symbol.VarInfo;
-import syntaxtree.IntegerLiteral;
 import syntaxtree.IntegerType;
 import syntaxtree.MainClass;
-import syntaxtree.Program;
 import syntaxtree.VisitorAdapter;
 
 public class MainClassHandler extends VisitorAdapter {
@@ -57,12 +56,6 @@ public class MainClassHandler extends VisitorAdapter {
 							+ old.type.row + "]" });
 
 		}
-		
-		System.out.println("oi");
-		
-		//Trata o Statement
-		StatementHandler.firstPass(env, info, node.s);
 
-		
 	}
 }

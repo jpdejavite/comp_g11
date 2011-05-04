@@ -31,7 +31,7 @@ public final class Main
 					         System.in : 
 					         new FileInputStream(args[0]);
 			InputStreamReader input = new InputStreamReader(is);
-			PushbackReader pushback = new PushbackReader(input);
+			PushbackReader pushback = new PushbackReader(input, 1024);
 			Lexer lexer = new Lexer(pushback);
 			Parser parser = new Parser(lexer);
 			
