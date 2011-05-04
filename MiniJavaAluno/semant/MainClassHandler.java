@@ -58,8 +58,6 @@ public class MainClassHandler extends VisitorAdapter {
 
 		}
 		
-		System.out.println("lala");
-		
 		//Trata o Statement
 		StatementHandler.firstPass(env, info, node.s);
 
