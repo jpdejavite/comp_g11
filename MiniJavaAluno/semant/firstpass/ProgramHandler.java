@@ -1,12 +1,11 @@
 package semant.firstpass;
 
-import errors.ErrorEchoer;
 import semant.Env;
 import syntaxtree.ClassDecl;
 import syntaxtree.Program;
-import syntaxtree.Statement;
 import syntaxtree.VisitorAdapter;
 import util.List;
+import errors.ErrorEchoer;
 
 public class ProgramHandler extends VisitorAdapter {
 

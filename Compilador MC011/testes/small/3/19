@@ -2,11 +2,10 @@
 class m
 {
    public static void main(String[] args)
-   {
-   	{
-   		System.out.println(1);
-      
-      	System.out.println(1);
-      	}
+   {   	
+   		 if ( new m() < 10   )
+          System.out.println(1);
+          else
+  		System.out.println(1);
    }
 }

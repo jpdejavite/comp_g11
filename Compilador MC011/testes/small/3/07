@@ -3,7 +3,7 @@ class m
 {
     public static void main(String[] args)
     {
-    	System.out.println(new a().Init().a().a().a().a().a().i());
+    	System.out.println(new a().Init(0).a().a().a().a().a().i());
     }
 }
 

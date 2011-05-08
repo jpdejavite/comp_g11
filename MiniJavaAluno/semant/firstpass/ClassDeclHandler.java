@@ -65,11 +65,6 @@ public class ClassDeclHandler extends VisitorAdapter {
 					"Simbolo: " + className });
 		}
 		
-		// Seta a classe pai
-		Symbol superClass = Symbol.symbol(node.superClass.s);
-		ClassInfo superInfo = new ClassInfo(superClass);
-		info.setBase(superInfo);
-
 		// Adiciona todas as declarações da classe
 		List<VarDecl> varDeclList = node.varList;
 		while (varDeclList != null && varDeclList.head != null) {

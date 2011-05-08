@@ -1,6 +1,6 @@
-package semant;
+package semant.firstpass;
 
-import semant.firstpass.ProgramHandler;
+import semant.Env;
 import syntaxtree.Program;
 import errors.ErrorEchoer;
 
