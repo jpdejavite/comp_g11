@@ -13,16 +13,36 @@ import syntaxtree.Type;
 import syntaxtree.VisitorAdapter;
 import util.List;
 
+/**
+ * The Class ClassDeclHandler.
+ */
 public class ClassDeclHandler extends VisitorAdapter {
 
+	/** The environment. */
 	private Env env;
 
+	/**
+	 * Instantiates a new class declaration handler.
+	 * 
+	 * @param e
+	 *            the environment
+	 */
 	private ClassDeclHandler(Env e) {
 		super();
 
+		// saves the environment to change it
 		env = e;
 	}
 
+	/**
+	 * Do the second pass of the class declaration (simple and extends). Verify
+	 * all methods signatures ,return Expression and their statements.
+	 * 
+	 * @param e
+	 *            the environment
+	 * @param c
+	 *            the class declaration
+	 */
 	public static void secondPass(Env e, ClassDecl c) {
 		ClassDeclHandler classDeclHandler = new ClassDeclHandler(e);
 
@@ -30,18 +50,25 @@ public class ClassDeclHandler extends VisitorAdapter {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see syntaxtree.VisitorAdapter#visit(syntaxtree.ClassDeclSimple)
+	 */
 	public void visit(ClassDeclSimple node) {
 
+		// gets the class info stored in the environment
 		Symbol className = Symbol.symbol(node.name.s);
 		ClassInfo classInfo = env.classes.get(className);
 
-		// lista de métodos da classes
+		// analyze all methods in this class
 		List<MethodDecl> methodDeclList = node.methodList;
 		while (methodDeclList != null && methodDeclList.head != null) {
+			// gets the method info stored in the environment
 			Symbol methodName = Symbol.symbol(methodDeclList.head.name.s);
 			MethodInfo methodInfo = classInfo.methods.get(methodName);
 
-			// verifica a lista de declarações
+			// analyze (second pass) all statements in this method
 			List<Statement> statementList = methodDeclList.head.body;
 			while (statementList != null && statementList.head != null) {
 				StatementHandler.secondPass(env, classInfo, methodInfo,
@@ -49,10 +76,11 @@ public class ClassDeclHandler extends VisitorAdapter {
 				statementList = statementList.tail;
 			}
 
-			// verifica o retorno do método
+			// get the return type form the return expression
 			Type expReturnType = ExpHandler.secondPass(env, classInfo,
 					methodInfo, methodDeclList.head.returnExp);
 
+			// check the return expression type with the declared one
 			if (!(expReturnType.isComparable(methodDeclList.head.returnType,
 					env, Type.getTypeName(expReturnType), node.line, node.row))) {
 				env.err.Error(node, new Object[] {
@@ -61,22 +89,29 @@ public class ClassDeclHandler extends VisitorAdapter {
 						"Encontrado: " + expReturnType });
 			}
 
+			// iterate over the list
 			methodDeclList = methodDeclList.tail;
 		}
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see syntaxtree.VisitorAdapter#visit(syntaxtree.ClassDeclExtends)
+	 */
 	public void visit(ClassDeclExtends node) {
+		// gets the class info stored in the environment
 		Symbol className = Symbol.symbol(node.name.s);
 		ClassInfo classInfo = env.classes.get(className);
 
-		// lista de métodos da classes
+		// gets the method info stored in the environment
 		List<MethodDecl> methodDeclList = node.methodList;
 		while (methodDeclList != null && methodDeclList.head != null) {
 			Symbol methodName = Symbol.symbol(methodDeclList.head.name.s);
 			MethodInfo methodInfo = classInfo.methods.get(methodName);
 
-			// verifica a lista de declarações
+			// analyze (second pass) all statements in this method
 			List<Statement> statementList = methodDeclList.head.body;
 			while (statementList != null && statementList.head != null) {
 				StatementHandler.secondPass(env, classInfo, methodInfo,
@@ -84,10 +119,11 @@ public class ClassDeclHandler extends VisitorAdapter {
 				statementList = statementList.tail;
 			}
 
-			// verifica o retorno do método
+			// get the return type form the return expression
 			Type expReturnType = ExpHandler.secondPass(env, classInfo,
 					methodInfo, methodDeclList.head.returnExp);
 
+			// check the return expression type with the declared one
 			if (!(expReturnType.isComparable(methodDeclList.head.returnType,
 					env, Type.getTypeName(expReturnType), node.line, node.row))) {
 				env.err.Error(node, new Object[] {
@@ -96,6 +132,7 @@ public class ClassDeclHandler extends VisitorAdapter {
 						"Encontrado: " + expReturnType });
 			}
 
+			// iterate over the list
 			methodDeclList = methodDeclList.tail;
 		}
 	}
