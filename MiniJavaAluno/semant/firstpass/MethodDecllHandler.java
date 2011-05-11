@@ -24,18 +24,32 @@ public class MethodDecllHandler extends VisitorAdapter {
 		classInfo = v;
 	}
 
+	/**
+	 * First pass of methods.
+	 * 
+	 * @param env
+	 *            the enviroment
+	 * @param info
+	 *            the Class info
+	 * @param methodDecl
+	 *            the method decl node
+	 */
 	public static void firstPass(Env env, ClassInfo info, MethodDecl methodDecl) {
+
+		// Creates the handler and calls accept
 		MethodDecllHandler methodDeclHandler = new MethodDecllHandler(env, info);
 
 		methodDecl.accept(methodDeclHandler);
 	}
 
 	public void visit(MethodDecl node) {
-		// adiciona a declaração do método na classe
+		// Creates the method info
 		Symbol methodName = Symbol.symbol(node.name.s);
 		MethodInfo methodInfo = new MethodInfo(node.returnType, methodName,
 				classInfo.name);
 
+		// Adds the method to the class info. If already exists the adds an
+		// error
 		if (!classInfo.addMethod(methodInfo)) {
 			MethodInfo old = classInfo.methods.get(methodName);
 
@@ -47,14 +61,20 @@ public class MethodDecllHandler extends VisitorAdapter {
 							+ old.type.row + "]" });
 		}
 
-		// adiciona todas os parâmetros no método
+		// Goes through the param list
 		List<Formal> formalList = node.formals;
 		while (formalList != null && formalList.head != null) {
-			// cria a variavel formal
+
+			// Creates the formal (param) info
 			Symbol formalName = Symbol.symbol(formalList.head.name.s);
 			VarInfo formalInfo = new VarInfo(formalList.head.type, formalName);
 
+			// Adds the formal info to the method info. If already exists the
+			// adds an error
 			if (!methodInfo.addFormal(formalInfo)) {
+
+				// Gets the formal info that was alredy there to get the
+				// location
 				VarInfo old = methodInfo.formalsTable.get(formalName);
 
 				env.err.Error(node.name, new Object[] {
@@ -69,16 +89,23 @@ public class MethodDecllHandler extends VisitorAdapter {
 			formalList = formalList.tail;
 		}
 
-		// adiciona todas as declarações no método
+		// Goes through the local list
 		List<VarDecl> localList = node.locals;
 		while (localList != null && localList.head != null) {
-			// cria a variavel local
+
+			// Creates the local info
 			Symbol localName = Symbol.symbol(localList.head.name.s);
 			VarInfo localInfo = new VarInfo(localList.head.type, localName);
-			
+
+			// Adds the local info to the method info. If already exists the
+			// adds an error
 			if (!methodInfo.addLocal(localInfo)) {
+
+				// Gets the olf var info that was alredy there to get the
+				// location
+				// It can be in local table and formal table
 				VarInfo old = methodInfo.localsTable.get(localName);
-				if(old == null) {
+				if (old == null) {
 					old = methodInfo.formalsTable.get(localName);
 				}
 				env.err.Error(node.name, new Object[] {

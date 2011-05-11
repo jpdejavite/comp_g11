@@ -17,8 +17,18 @@ public class ProgramHandler extends VisitorAdapter {
 		result = new Env(err);
 	}
 
+	/**
+	 * First pass of the Program.
+	 * 
+	 * @param err
+	 *            the err
+	 * @param p
+	 *            the p
+	 * @return the env
+	 */
 	public static Env firstPass(ErrorEchoer err, Program p) {
 
+		// Creates a program handler and calls the accept that will call visit
 		ProgramHandler h = new ProgramHandler(err);
 
 		p.accept(h);
@@ -27,10 +37,10 @@ public class ProgramHandler extends VisitorAdapter {
 	}
 
 	public void visit(Program node) {
-		// classe principal
+		// Calls main class first pass
 		MainClassHandler.firstPass(result, node.mainClass);
 
-		// lista de declarações de classes
+		// Iterates the class list and call the class first pass for each one
 		List<ClassDecl> classDeclList = node.classList;
 		while (classDeclList != null && classDeclList.head != null) {
 			ClassDeclHandler.firstPass(result, classDeclList.head);

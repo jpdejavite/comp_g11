@@ -21,7 +21,17 @@ public class ClassDeclHandler extends VisitorAdapter {
 		env = e;
 	}
 
+	/**
+	 * First pass of the class.
+	 * 
+	 * @param e
+	 *            the enviroment
+	 * @param c
+	 *            the class declaration node
+	 */
 	public static void firstPass(Env e, ClassDecl c) {
+		
+		//Creates the handler and calls accept
 		ClassDeclHandler classDeclHandler = new ClassDeclHandler(e);
 
 		c.accept(classDeclHandler);
@@ -29,24 +39,27 @@ public class ClassDeclHandler extends VisitorAdapter {
 	}
 
 	public void visit(ClassDeclSimple node) {
-		// Cria a classe
+		// Creates the class info
 		Symbol className = Symbol.symbol(node.name.s);
 		ClassInfo info = new ClassInfo(className);
 
-		// Verifica se ja existe a classe com esse nome
+		// Adds the class to the enviroment, if already exists a class with taht
+		// name adds an error
 		if (!env.classes.put(className, info)) {
 			env.err.Error(node, new Object[] { "Nome de classe redefinido.",
 					"Simbolo: " + className });
 		}
 
-		// adiciona todas as declarações da classe
+		// Iterates through the variable declations and calls the first pass for
+		// each one
 		List<VarDecl> varDeclList = node.varList;
 		while (varDeclList != null && varDeclList.head != null) {
 			VarDeclHandler.firstPass(env, info, varDeclList.head);
 			varDeclList = varDeclList.tail;
 		}
 
-		// adiciona todas as declarações de métodos da classe
+		// Iterates through the method declations and calls the first pass for
+		// each one
 		List<MethodDecl> methodDecl = node.methodList;
 		while (methodDecl != null && methodDecl.head != null) {
 			MethodDecllHandler.firstPass(env, info, methodDecl.head);
@@ -55,24 +68,27 @@ public class ClassDeclHandler extends VisitorAdapter {
 	}
 
 	public void visit(ClassDeclExtends node) {
-		// Cria a classe
+		// Creates the class info
 		Symbol className = Symbol.symbol(node.name.s);
 		ClassInfo info = new ClassInfo(className);
 
-		// Verifica se ja existe a classe com esse nome
+		// Adds the class to the enviroment, if already exists a class with taht
+		// name adds an error
 		if (!env.classes.put(className, info)) {
 			env.err.Error(node, new Object[] { "Nome de classe redefinido.",
 					"Simbolo: " + className });
 		}
-		
-		// Adiciona todas as declarações da classe
+
+		// Iterates through the variable declations and calls the first pass for
+		// each one
 		List<VarDecl> varDeclList = node.varList;
 		while (varDeclList != null && varDeclList.head != null) {
 			VarDeclHandler.firstPass(env, info, varDeclList.head);
 			varDeclList = varDeclList.tail;
 		}
 
-		// adiciona todas as declarações de métodos da classe
+		// Iterates through the method declations and calls the first pass for
+		// each one
 		List<MethodDecl> methodDecl = node.methodList;
 		while (methodDecl != null && methodDecl.head != null) {
 			MethodDecllHandler.firstPass(env, info, methodDecl.head);
