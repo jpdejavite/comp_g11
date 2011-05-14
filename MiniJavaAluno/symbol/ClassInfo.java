@@ -67,42 +67,46 @@ public class ClassInfo {
 			} else {
 				if (!base.methods.get(name).type.isComparable(
 						methods.get(name).type, env, null, node.line, node.row)) {
-					env.err.Error(
-							node,
-							new Object[] { "Tipo de retorno diferente do metodo "
-									+ name
-									+ " na classe "
-									+ node.name
-									+ " do que na classe " + base.name });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Tipo de retorno diferente do metodo \'"
+											+ name
+											+ "\' na classe \'"
+											+ node.name
+											+ "\' do que na classe pai \'" + base.name +"\'" });
 				} else if (base.methods.get(name).formals != null
 						&& methods.get(name).formals == null) {
-					env.err.Error(
-							node,
-							new Object[] { "Numero diferente de parametros do metodo "
-									+ name
-									+ " na classe "
-									+ node.name
-									+ " do que na classe " + base.name });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero diferente de parametros do metodo \'"
+											+ name
+											+ "\' na classe \'"
+											+ node.name
+											+ "\' do que na classe pai \'" + base.name + "\'"});
 				} else if (base.methods.get(name).formals == null
 						&& methods.get(name).formals != null) {
-					env.err.Error(
-							node,
-							new Object[] { "Numero diferente de parametros do metodo "
-									+ name
-									+ " na classe "
-									+ node.name
-									+ " do que na classe " + base.name });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero diferente de parametros do metodo \'"
+											+ name
+											+ "\' na classe \'"
+											+ node.name
+											+ "\' do que na classe pai \'" + base.name + "\'" });
 				} else if (base.methods.get(name).formals != null
 						&& methods.get(name).formals != null
 						&& base.methods.get(name).formals.size() != methods
 								.get(name).formals.size()) {
-					env.err.Error(
-							node,
-							new Object[] { "Numero diferente de parametros do metodo "
-									+ name
-									+ " na classe "
-									+ node.name
-									+ " do que na classe " + base.name });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero diferente de parametros do metodo \'"
+											+ name
+											+ "\' na classe \'"
+											+ node.name
+											+ "\' do que na classe pai \'" + base.name + "\'" });
 				} else if (base.methods.get(name).formals != null
 						&& methods.get(name).formals != null
 						&& base.methods.get(name).formals.size() == methods
@@ -115,11 +119,17 @@ public class ClassInfo {
 						if (!baseFormals.head.type.isComparable(
 								classFormals.head.type, env, null, node.line,
 								node.row)) {
-							env.err.Error(node, new Object[] {
-									"Tipo invalido para parametro do metodo sobreescrito "
-											+ name + " na classe " + node.name,
-									"Esperado: " + baseFormals.head.type,
-									"Encontrado: " + classFormals.head.type });
+							env.err
+									.Error(
+											node,
+											new Object[] { "Tipo invalido para parametro do metodo sobreescrito \'"
+													+ name
+													+ "\' na classe \'"
+													+ node.name
+													+ "\'. Esperado: "
+													+ baseFormals.head.type
+													+ ". Encontrado: "
+													+ classFormals.head.type });
 						}
 
 						classFormals = classFormals.tail;
@@ -173,7 +183,7 @@ public class ClassInfo {
 
 		// pega a ultima declaracao do simbolo.
 		return attributesOrder.lastIndexOf(name) + 1; // adicionando 1 para
-														// considerar a vtable
+		// considerar a vtable
 	}
 
 	public int getMethodOffset(Symbol name) {

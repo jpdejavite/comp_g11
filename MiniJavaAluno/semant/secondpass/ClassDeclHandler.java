@@ -83,10 +83,16 @@ public class ClassDeclHandler extends VisitorAdapter {
 			// check the return expression type with the declared one
 			if (!(expReturnType.isComparable(methodDeclList.head.returnType,
 					env, Type.getTypeName(expReturnType), node.line, node.row))) {
-				env.err.Error(node, new Object[] {
-						"Tipo de retorno incompatível",
-						"Esperado: " + methodDeclList.head.returnType,
-						"Encontrado: " + expReturnType });
+				env.err
+						.Error(
+								node,
+								new Object[] { "Tipo de retorno incompativel do metodo \'"
+										+ methodDeclList.head.name.s
+										+ "\' da classe \'"
+										+ node.name.s
+										+ "\'. Esperado: "
+										+ methodDeclList.head.returnType
+										+ ". Encontrado: " + expReturnType });
 			}
 
 			// iterate over the list
@@ -126,10 +132,16 @@ public class ClassDeclHandler extends VisitorAdapter {
 			// check the return expression type with the declared one
 			if (!(expReturnType.isComparable(methodDeclList.head.returnType,
 					env, Type.getTypeName(expReturnType), node.line, node.row))) {
-				env.err.Error(node, new Object[] {
-						"Tipo de retorno incompatível",
-						"Esperado: " + methodDeclList.head.returnType,
-						"Encontrado: " + expReturnType });
+				env.err
+				.Error(
+						node,
+						new Object[] { "Tipo de retorno incompativel do metodo \'"
+								+ methodDeclList.head.name.s
+								+ "\' da classe \'"
+								+ node.name.s
+								+ "\'. Esperado: "
+								+ methodDeclList.head.returnType
+								+ ". Encontrado: " + expReturnType });
 			}
 
 			// iterate over the list

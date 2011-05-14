@@ -41,8 +41,7 @@ public class MainClassHandler extends VisitorAdapter {
 
 		// Adds the class to the enviroment, if already exists the add and error
 		if (!env.classes.put(className, info)) {
-			env.err.Error(node, new Object[] { "Nome de classe redefinido.",
-					"Simbolo: " + className });
+			env.err.Error(node, new Object[] { "Classe " + className + " redefinida."});
 		}
 
 		// Creates a varInfo for the main arg
@@ -59,8 +58,7 @@ public class MainClassHandler extends VisitorAdapter {
 			env.err.Error(node.mainArgName, new Object[] {
 					"Atributo \'" + mainArgName
 							+ "\' redeclarado para a classe \'" + info.name
-							+ "\'",
-					"Declaracao anterior aqui: [" + old.type.line + ","
+							+ "\' Declaracao anterior aqui: [" + old.type.line + ","
 							+ old.type.row + "]" });
 
 		}

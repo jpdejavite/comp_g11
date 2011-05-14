@@ -53,12 +53,10 @@ public class MethodDecllHandler extends VisitorAdapter {
 		if (!classInfo.addMethod(methodInfo)) {
 			MethodInfo old = classInfo.methods.get(methodName);
 
-			env.err.Error(node.name, new Object[] {
-					"Metodo \'" + methodName
-							+ "\' redeclarado para a classe \'"
-							+ classInfo.name + "\'",
-					"Declaracao anterior aqui: [" + old.type.line + ","
-							+ old.type.row + "]" });
+			env.err.Error(node.name, new Object[] { "Metodo \'" + methodName
+					+ "\' redeclarado para a classe \'" + classInfo.name
+					+ "\' Declaracao anterior aqui: [" + old.type.line + ","
+					+ old.type.row + "]" });
 		}
 
 		// Goes through the param list
@@ -77,13 +75,11 @@ public class MethodDecllHandler extends VisitorAdapter {
 				// location
 				VarInfo old = methodInfo.formalsTable.get(formalName);
 
-				env.err.Error(node.name, new Object[] {
-						"Parametro \'" + formalName
-								+ "\' redeclarado para o metodo \'"
-								+ methodInfo.name + "\' na classe \'"
-								+ classInfo.name + "\'",
-						"Declaracao anterior aqui: [" + old.type.line + ","
-								+ old.type.row + "]" });
+				env.err.Error(node.name, new Object[] { "Parametro \'"
+						+ formalName + "\' redeclarado para o metodo \'"
+						+ methodInfo.name + "\' na classe \'" + classInfo.name
+						+ "\' Declaracao anterior aqui: [" + old.type.line
+						+ "," + old.type.row + "]" });
 			}
 
 			formalList = formalList.tail;
@@ -112,8 +108,7 @@ public class MethodDecllHandler extends VisitorAdapter {
 						"Variavel Local \'" + localName
 								+ "\' redeclarado para o metodo \'"
 								+ methodInfo.name + "\' na classe \'"
-								+ classInfo.name + "\'",
-						"Declaracao anterior aqui: [" + old.type.line + ","
+								+ classInfo.name + "\' Declaracao anterior aqui: [" + old.type.line + ","
 								+ old.type.row + "]" });
 			}
 

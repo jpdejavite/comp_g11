@@ -106,9 +106,13 @@ public class StatementHandler extends VisitorAdapter {
 
 		// check the if expression type
 		if (!(ifType instanceof BooleanType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para condicao do \'while\'.",
-					"Esperado: boolean", "Encontrado: " + ifType });
+			env.err
+					.Error(
+							node,
+							new Object[] { "Tipo invalido para condicao do \'if\'. "
+									+ "Esperado: boolean. "
+									+ "Encontrado: "
+									+ ifType });
 		}
 
 		// analyze the then statement
@@ -133,9 +137,10 @@ public class StatementHandler extends VisitorAdapter {
 
 		// check the while expression type
 		if (!(condiditionType instanceof BooleanType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para condicao do \'while\'.",
-					"Esperado: boolean", "Encontrado: " + condiditionType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para condicao do \'while\'. "
+							+ "Esperado: boolean. " + "Encontrado: "
+							+ condiditionType });
 		}
 
 		// analyze the while statement
@@ -158,18 +163,18 @@ public class StatementHandler extends VisitorAdapter {
 
 		// check the variable existence
 		if (varInfo == null) {
-			env.err.Error(node, new Object[] { "Identificador \'" + varName
-					+ "\' nao definido no metodo atual." });
+			env.err.Error(node, new Object[] { "\'" + varName
+					+ "\' nao definida no metodo atual." });
 		}
 
 		// if the variable exist
 		if (varInfo != null) {
 			// check the assign expression type with the variable type
-			if (!(expType.isComparable(varInfo.type, env,
-					Type.getTypeName(expType), node.line, node.row))) {
+			if (!(expType.isComparable(varInfo.type, env, Type
+					.getTypeName(expType), node.line, node.row))) {
 				env.err.Error(node,
-						new Object[] { "Atribuição com tipos diferentes \'"
-								+ varInfo.type + "\' = \'" + expType });
+						new Object[] { "Atribuicao com tipos diferentes \'"
+								+ varInfo.type + "\' = \'" + expType + "\'" });
 			}
 		}
 
@@ -186,9 +191,8 @@ public class StatementHandler extends VisitorAdapter {
 
 		// check the index type
 		if (!(indexType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o índice \'", "Esperado: int",
-					"Encontrado: " + indexType });
+			env.err.Error(node, new Object[] { "Tipo invalido para o indice. "
+					+ "Esperado: int. " + "Encontrado: " + indexType });
 		}
 
 		// gets the assign type form the assign expression
@@ -197,7 +201,7 @@ public class StatementHandler extends VisitorAdapter {
 		// check the assign type
 		if (!(expType instanceof IntegerType)) {
 			env.err.Error(node, new Object[] {
-					"Tipo invalido para a expressão \'", "Esperado: int",
+					"Tipo invalido para a expressao. " + "Esperado: int. ",
 					"Encontrado: " + expType });
 		}
 
@@ -207,7 +211,7 @@ public class StatementHandler extends VisitorAdapter {
 
 		// check the variable existence
 		if (varInfo == null) {
-			env.err.Error(node, new Object[] { "Identificador \'" + varName
+			env.err.Error(node, new Object[] { "\'" + varName
 					+ "\' nao definido no metodo atual." });
 		}
 
@@ -216,8 +220,8 @@ public class StatementHandler extends VisitorAdapter {
 			// check the assign array type
 			if (!(varInfo.type instanceof IntArrayType)) {
 				env.err.Error(node, new Object[] {
-						"Tipo invalido para a variável \'",
-						"Esperado: int array", "Encontrado: " + varInfo.type });
+						"Tipo invalido para a variavel. " +
+						"Esperado: int[]. " + "Encontrado: " + varInfo.type });
 			}
 		}
 

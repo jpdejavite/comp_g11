@@ -126,9 +126,13 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the left side expression type
 		if (!(leftType instanceof BooleanType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado esquerdo \'",
-					"Esperado: boolean", "Encontrado: " + leftType });
+			env.err
+					.Error(
+							node,
+							new Object[] { "Tipo invalido para o lado esquerdo. "
+									+ "Esperado: boolean. "
+									+ "Encontrado: "
+									+ leftType });
 		}
 
 		// gets the rigth side type form the rigth side expression
@@ -136,9 +140,10 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the rigth side expression type
 		if (!(rigthType instanceof BooleanType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado direito \'",
-					"Esperado: boolean", "Encontrado: " + rigthType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado direito. "
+							+ "Esperado: boolean. " + "Encontrado: "
+							+ rigthType });
 		}
 
 		// return the booelan type and store it on the node
@@ -160,11 +165,11 @@ public class ExpHandler extends TypeVisitorAdapter {
 		// type
 		if (!(leftType.isComparable(rigthType, env, Type.getTypeName(leftType),
 				node.line, node.row))
-				&& !(rigthType.isComparable(leftType, env,
-						Type.getTypeName(rigthType), node.line, node.row))) {
+				&& !(rigthType.isComparable(leftType, env, Type
+						.getTypeName(rigthType), node.line, node.row))) {
 			env.err.Error(node,
-					new Object[] { "Comparação de tipos diferentes \'"
-							+ leftType + "\' == \'" + rigthType });
+					new Object[] { "Comparacao de tipos diferentes: "
+							+ leftType + " == " + rigthType });
 		}
 
 		// return the booelan type and store it on the node
@@ -182,9 +187,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the left side expression type
 		if (!(leftType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado esquerdo \'", "Esperado: int",
-					"Encontrado: " + leftType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado esquerdo. "
+							+ "Esperado: int. " + "Encontrado: " + leftType });
 		}
 
 		// gets the rigth side type form the rigth side expression
@@ -192,9 +197,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the rigth side expression type
 		if (!(rigthType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado direito \'", "Esperado: int",
-					"Encontrado: " + rigthType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado direito. "
+							+ "Esperado: int. " + "Encontrado: " + rigthType });
 		}
 
 		// return the booelan type and store it on the node
@@ -212,9 +217,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the left side expression type
 		if (!(leftType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado esquerdo \'", "Esperado: int",
-					"Encontrado: " + leftType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado esquerdo. "
+							+ "Esperado: int. " + "Encontrado: " + leftType });
 		}
 
 		// gets the rigth side type form the rigth side expression
@@ -222,9 +227,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the rigth side expression type
 		if (!(rigthType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado direito \'", "Esperado: int",
-					"Encontrado: " + rigthType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado direito. "
+							+ "Esperado: int. " + "Encontrado: " + rigthType });
 		}
 
 		// return the integer type and store it on the node
@@ -242,9 +247,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the left side expression type
 		if (!(leftType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado esquerdo \'", "Esperado: int",
-					"Encontrado: " + leftType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado esquerdo. "
+							+ "Esperado: int. " + "Encontrado: " + leftType });
 		}
 
 		// gets the rigth side type form the rigth side expression
@@ -252,9 +257,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the rigth side expression type
 		if (!(rigthType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado direito \'", "Esperado: int",
-					"Encontrado: " + rigthType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado direito. "
+							+ "Esperado: int. " + "Encontrado: " + rigthType });
 		}
 
 		// return the integer type and store it on the node
@@ -272,9 +277,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the left side expression type
 		if (!(leftType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado esquerdo \'", "Esperado: int",
-					"Encontrado: " + leftType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado esquerdo. "
+							+ "Esperado: int. " + "Encontrado: " + leftType });
 		}
 
 		// gets the rigth side type form the rigth side expression
@@ -282,9 +287,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the rigth expression type
 		if (!(rigthType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o lado direito \'", "Esperado: int",
-					"Encontrado: " + rigthType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para o lado direito. "
+							+ "Esperado: int. " + "Encontrado: " + rigthType });
 		}
 
 		// return the integer type and store it on the node
@@ -302,9 +307,8 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the index expression type
 		if (!(indexType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para o índice \'", "Esperado: int",
-					"Encontrado: " + indexType });
+			env.err.Error(node, new Object[] { "Tipo invalido para o indice. "
+					+ "Esperado: int. " + "Encontrado: " + indexType });
 		}
 
 		// gets the array lookup type form the array lookup expression
@@ -312,9 +316,11 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the array lookup expression type
 		if (!(expType instanceof IntArrayType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para a expressão \'", "Esperado: int []",
-					"Encontrado: " + expType });
+			env.err
+					.Error(node,
+							new Object[] { "Tipo invalido para a expressao. "
+									+ "Esperado: int []. " + "Encontrado: "
+									+ expType });
 		}
 
 		// return the integer type and store it on the node
@@ -332,9 +338,11 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the array length expression type
 		if (!(expType instanceof IntArrayType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para a expressão \'", "Esperado: int []",
-					"Encontrado: " + expType });
+			env.err
+					.Error(node,
+							new Object[] { "Tipo invalido para a expressao. "
+									+ "Esperado: int []. " + "Encontrado: "
+									+ expType });
 		}
 
 		// return the type and store it on the node
@@ -352,9 +360,11 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the array length expression type
 		if (!(expType instanceof IdentifierType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para fazer chamada", "Esperado: Classe",
-					"Encontrado: " + expType });
+			env.err
+					.Error(node,
+							new Object[] { "Tipo invalido para fazer chamada. "
+									+ "Esperado: Classe. " + "Encontrado: "
+									+ expType });
 		} else {
 			IdentifierType classType = (IdentifierType) expType;
 
@@ -375,23 +385,35 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 				// if one of the parameter list is null they are different
 				if (formalList == null && actualsList != null) {
-					env.err.Error(node, new Object[] {
-							"Numero errado de parametros do metodo "
-									+ methodInfo.name, "Esperado: " + 0,
-							"Encontrado: " + actualsList.size() });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero errado de parametros do metodo "
+											+ methodInfo.name
+											+ ". Esperado: "
+											+ 0
+											+ ". Encontrado: "
+											+ actualsList.size() });
 				} else if (formalList != null && actualsList == null) {
-					env.err.Error(node, new Object[] {
-							"Numero errado de parametros do metodo "
-									+ methodInfo.name,
-							"Esperado: " + formalList.size(),
-							"Encontrado: " + 0 });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero errado de parametros do metodo "
+											+ methodInfo.name
+											+ ". Esperado: "
+											+ formalList.size()
+											+ ". Encontrado: " + 0 });
 				} else if (actualsList != null && actualsList != null
 						&& actualsList.size() != formalList.size()) {
-					env.err.Error(node, new Object[] {
-							"Numero errado de parametros do metodo "
-									+ methodInfo.name,
-							"Esperado: " + formalList.size(),
-							"Encontrado: " + actualsList.size() });
+					env.err
+							.Error(
+									node,
+									new Object[] { "Numero errado de parametros do metodo "
+											+ methodInfo.name
+											+ ". Esperado: "
+											+ formalList.size()
+											+ ". Encontrado: "
+											+ actualsList.size() });
 				} else {
 
 					// analyze all parameters expression and check their type
@@ -406,11 +428,15 @@ public class ExpHandler extends TypeVisitorAdapter {
 						if (!(actualType.isComparable(formalList.head.type,
 								env, Type.getTypeName(actualType), node.line,
 								node.row))) {
-							env.err.Error(node, new Object[] {
-									"Tipo invalido para parametro do metodo "
-											+ methodInfo.name,
-									"Esperado: " + formalList.head.type,
-									"Encontrado: " + actualType });
+							env.err
+									.Error(
+											node,
+											new Object[] { "Tipo invalido para parametro do metodo "
+													+ methodInfo.name
+													+ ". Esperado: "
+													+ formalList.head.type
+													+ ". Encontrado: "
+													+ actualType });
 						}
 
 						// iterate the lists
@@ -469,7 +495,7 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the variable expression type
 		if (varInfo == null) {
-			env.err.Error(node, new Object[] { "Identificador \'" + varName
+			env.err.Error(node, new Object[] { "\'" + varName
 					+ "\' nao definido no metodo atual." });
 			return node.type = new IntegerType(node.line, node.row);
 		}
@@ -486,14 +512,15 @@ public class ExpHandler extends TypeVisitorAdapter {
 	public Type visit(This node) {
 		// check ifit's the main method, because it cannot be used in the main
 		if (minfo == null) {
-			env.err.Error(
-					node,
-					new Object[] { "this nao pode ser usado em um contexto estatico." });
+			env.err
+					.Error(
+							node,
+							new Object[] { "this nao pode ser usado em um contexto estatico." });
 		}
 
 		// return the identifier type and store it on the node
-		return node.type = new IdentifierType(node.line, node.row,
-				cinfo.name.toString());
+		return node.type = new IdentifierType(node.line, node.row, cinfo.name
+				.toString());
 	}
 
 	/*
@@ -507,9 +534,9 @@ public class ExpHandler extends TypeVisitorAdapter {
 
 		// check the new array expression type
 		if (!(expType instanceof IntegerType)) {
-			env.err.Error(node, new Object[] {
-					"Tipo invalido para a expressão \'", "Esperado: int",
-					"Encontrado: " + expType });
+			env.err.Error(node,
+					new Object[] { "Tipo invalido para a expressao. "
+							+ "Esperado: int. " + "Encontrado: " + expType });
 		}
 
 		// return the int array type and store it on the node
@@ -529,7 +556,7 @@ public class ExpHandler extends TypeVisitorAdapter {
 		// check the variable existence
 		if (classInfo == null) {
 			env.err.Error(node, new Object[] { "Classe \'" + className
-					+ "\' nao definido no programa." });
+					+ "\' nao definida no programa." });
 			return node.type = new IntegerType(node.line, node.row);
 		}
 
@@ -550,7 +577,7 @@ public class ExpHandler extends TypeVisitorAdapter {
 		// check the variable expression type
 		if (!(expType instanceof BooleanType)) {
 			env.err.Error(node, new Object[] {
-					"Tipo invalido para a expressão \'", "Esperado: boolean",
+					"Tipo invalido para a expressao. " + "Esperado: boolean. "+
 					"Encontrado: " + expType });
 		}
 

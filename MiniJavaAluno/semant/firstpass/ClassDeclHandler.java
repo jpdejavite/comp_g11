@@ -46,8 +46,7 @@ public class ClassDeclHandler extends VisitorAdapter {
 		// Adds the class to the enviroment, if already exists a class with taht
 		// name adds an error
 		if (!env.classes.put(className, info)) {
-			env.err.Error(node, new Object[] { "Nome de classe redefinido.",
-					"Simbolo: " + className });
+			env.err.Error(node, new Object[] { "Classe " + className + " redefinida." });
 		}
 
 		// Iterates through the variable declations and calls the first pass for
@@ -75,8 +74,7 @@ public class ClassDeclHandler extends VisitorAdapter {
 		// Adds the class to the enviroment, if already exists a class with taht
 		// name adds an error
 		if (!env.classes.put(className, info)) {
-			env.err.Error(node, new Object[] { "Nome de classe redefinido.",
-					"Simbolo: " + className });
+			env.err.Error(node, new Object[] { "Classe " + className + " redefinida." });
 		}
 
 		// Iterates through the variable declations and calls the first pass for

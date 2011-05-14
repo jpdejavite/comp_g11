@@ -54,7 +54,7 @@ public class InheritanceBuilder {
 
 		// If have found any cycle then adds an error
 		if (haveCycle) {
-			env.err.Error(p, new Object[] { "Heran�a c�clica detectada" });
+			env.err.Error(p, new Object[] { "Heranca ciclica detectada." });
 		} else {
 			// If there is no cycle then goes through the original class list
 			// and calls the ste base method for each one (when there is the
@@ -80,7 +80,8 @@ public class InheritanceBuilder {
 			if (superInfo == null) {
 				env.err.Error(((ClassDeclExtends) classDecl),
 						new Object[] { "Classe pai \'" + superClass
-								+ "\' nao encontrada," });
+								+ "\' da classe \'" + classDecl.name.s
+								+ "\' nao encontrada." });
 			} else {
 				// Applies set base to the super class before aplying the the
 				// given class

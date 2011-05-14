@@ -52,8 +52,7 @@ public class VarDeclHandler extends VisitorAdapter {
 
 			env.err.Error(node.name, new Object[] {
 					"Atributo \'" + name + "\' redeclarado para a classe \'"
-							+ info.name + "\'",
-					"Declaracao anterior aqui: [" + old.type.line + ","
+							+ info.name + "\'. Declaracao anterior aqui: [" + old.type.line + ","
 							+ old.type.row + "]" });
 
 		}

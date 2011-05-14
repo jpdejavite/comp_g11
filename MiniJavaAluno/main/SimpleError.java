@@ -12,6 +12,7 @@ class SimpleError implements ErrorEchoer
     private int ec;
     private int wc;
     private PrintStream err;
+    private boolean printedSource = false;
 
     public SimpleError(PrintStream e, String s)
     {
@@ -39,9 +40,16 @@ class SimpleError implements ErrorEchoer
         this(s, "-- UNKNOWN SOURCE --");
     }
 
-    public void Print(Object[] msg)
+    public void Println(Object[] msg)
     {
         err.println(sourceName + ":");
+        for ( Object o : msg )
+            err.println("    " + o);
+    }
+    
+    public void Print(Object[] msg)
+    {
+        err.print(sourceName + ":");
         for ( Object o : msg )
             err.println("    " + o);
     }
@@ -50,7 +58,11 @@ class SimpleError implements ErrorEchoer
     {
         ec++;
         
-        err.println("Erro em " + sourceName + "[" + obj.line + "," + obj.row + "]:");
+        if(!printedSource) {
+        	printedSource = true;
+        	err.print(sourceName + ": [" + obj.line + "," + obj.row + "]");
+        }
+        
         for ( Object o : msg )
             err.println("    " + o);
     }
