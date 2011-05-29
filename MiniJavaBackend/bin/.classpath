@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="analysis.jar"/>
+	<classpathentry kind="lib" path="node.jar"/>
+	<classpathentry kind="lib" path="first_pass.jar"/>
+	<classpathentry kind="lib" path="parser.jar"/>
+	<classpathentry kind="lib" path="second_pass.jar"/>
+	<classpathentry kind="lib" path="lexer.jar"/>
+	<classpathentry kind="lib" path="semant.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
