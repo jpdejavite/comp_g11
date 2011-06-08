@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -22,16 +21,18 @@ public class Main {
 			System.out.println("Usage: saveWorld path_arquivo");
 			return;
 		}
-
-		Grasp grasp = Main.readInput(args[0]);
+		
+		long msBegin = System.currentTimeMillis();
+		
+		Grasp grasp = Main.readInput(args[0], msBegin);
 
 		StationList solution = grasp.execute();
 
-		printSolution(solution);
+		printSolution(solution, msBegin);
 
 	}
 
-	private static void printSolution(StationList solution) {
+	private static void printSolution(StationList solution, long msBegin) {
 		System.out.println("Valor: " + solution.getTotalCost());
 		System.out.println("Total: " + solution.getStations().size());
 
@@ -50,9 +51,10 @@ public class Main {
 		for (Station s : solution.getStations()) {
 			System.out.println("S_" + s.getNumber());
 		}
+		System.out.println(System.currentTimeMillis() - msBegin);
 	}
 
-	public static Grasp readInput(String path) {
+	public static Grasp readInput(String path, long msBegin) {
 		try {
 			// Open the file that is the first
 			// command line parameter
@@ -70,17 +72,18 @@ public class Main {
 			Integer stationsNumber = Integer.valueOf(strLine.substring(2,
 					strLine.length()));
 
-			List<Station> stationList = new ArrayList<Station>();
+			StationList worstSolution = new StationList();
 			int i = 1;
 			// Read File Line By Line
 			while ((strLine = br.readLine()) != null) {
-				stationList.add(Station.readStation(strLine, i++));
+				Station s = Station.readStation(strLine, i++);
+				worstSolution.addStation(s);
 			}
 
 			// Close the input stream
 			in.close();
 
-			return new Grasp(pointsNumber, stationsNumber, stationList);
+			return new Grasp(pointsNumber, stationsNumber, worstSolution.getStations(), msBegin, worstSolution);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

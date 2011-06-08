@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +57,10 @@ public class Station {
 
 	public BigDecimal getPonderation() {
 		if (ponderation == null) {
-			if (points.size() != 0) {
+			if (points.size() == 0) {
 				ponderation = BigDecimal.valueOf(Integer.MAX_VALUE);
 			} else {
-				ponderation = cost.divide(BigDecimal.valueOf(points.size()));
+				ponderation = cost.divide(BigDecimal.valueOf(points.size()), 10, RoundingMode.DOWN);
 			}
 		}
 		return ponderation;

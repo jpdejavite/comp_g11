@@ -1,4 +1,3 @@
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,73 +12,102 @@ public class Grasp {
 	private List<Station> stationList;
 	private long msBegin;
 	private boolean isLocalMin;
+	private final StationList worstSolution;
 
-	private final static int K = 5;
+	private final static int K = 30;
+	private final static int L = 5;
 
 	public Grasp(Integer pointsNumber, Integer stationsNumber,
-			List<Station> stationList) {
+			List<Station> stationList, long msBegin, StationList worstSolution) {
 		this.setPointsNumber(pointsNumber);
 		this.setStationsNumber(stationsNumber);
 		this.setStationList(stationList);
+		this.msBegin = msBegin;
+		this.worstSolution = worstSolution;
 	}
 
 	public StationList execute() {
+		int i = 0, j = 0;
 		StationList solution = new StationList();
-		StationList starSolution = new StationList();
-		Station station = new Station();
-		station.setCost(BigDecimal.valueOf(Integer.MAX_VALUE));
-		starSolution.addStation(station);
+		StationList starSolution = worstSolution;
 
-		msBegin = System.currentTimeMillis();
+		Collections.sort(stationList, new Comparator<Station>() {
+			@Override
+			public int compare(Station o1, Station o2) {
+				return o1.getPonderation().compareTo(o2.getPonderation());
+			}
+		});
 
 		while (System.currentTimeMillis() - msBegin < 50000) {
+			j++;
 			solution = randomGreedySolution();
 			solution = localSearch(solution);
 			if (solution.getTotalCost().compareTo(starSolution.getTotalCost()) < 0) {
+				i++;
 				starSolution = solution;
 			}
 		}
+
+		System.out.println("j: " + j);
+		System.out.println("i: " + i);
 
 		return starSolution;
 	}
 
 	private StationList localSearch(StationList solution) {
 		isLocalMin = false;
-		StationList starStationList = createCopySolutionList(solution);
-		StationList copyStationList = createCopySolutionList(solution);
-
-		while (System.currentTimeMillis() - msBegin < 50000 && !isLocalMin) {
-			Station changeStation = null;
-			Integer changeIndex = null;
-
-			// percorre todos os elementos da solucao
-			for (Station station : solution.getStations()) {
-				// remove fom aux list
-				removeFromStationList(station, copyStationList);
-
-				// se for valida atualiza a solucao otima
-				if (isViable(copyStationList)) {
-					if (copyStationList.getTotalCost().compareTo(
-							starStationList.getTotalCost()) < 0) {
-						changeStation = null;
-						changeIndex = solution.getStations().indexOf(station);
-						starStationList = createCopySolutionList(copyStationList);
-					}
-				}
-
-				// adiciona todos os vizinhos
-
+		StationList starStationList = solution;
+		long localBegin = System.currentTimeMillis();
+		
+		while (System.currentTimeMillis() - msBegin < 50000
+				&& System.currentTimeMillis() - localBegin < 25000
+				&& !isLocalMin) {
+			//System.out.println(System.currentTimeMillis() - msBegin);
+			StationList bestNeighbor = getBestNeighbor(starStationList);
+			if (bestNeighbor.getTotalCost().compareTo(
+					starStationList.getTotalCost()) < 0) {
+				starStationList = bestNeighbor;
+			//	System.out.println(bestNeighbor.getTotalCost());
+			} else {
+				isLocalMin = true;
 			}
 
 		}
-		return solution;
+		return starStationList;
 	}
 
-	private void removeFromStationList(Station station,
-			StationList copyStationList) {
-		copyStationList.getStations().remove(station);
-		copyStationList.setTotalCost(copyStationList.getTotalCost().subtract(
-				station.getCost()));
+	private StationList getBestNeighbor(StationList solution) {
+		StationList bestNeighbor = worstSolution;
+
+		for (int i=stationList.size()-1, j=0; i>=0 && j<L ; i--) {
+			Station s = stationList.get(i);
+			if (solution.getStations().contains(s)) {
+				j++;
+				StationList firstNeighbor = solution;
+				firstNeighbor.removeStation(s);
+				if (isViable(firstNeighbor)
+						&& firstNeighbor.getTotalCost().compareTo(
+								bestNeighbor.getTotalCost()) < 0) {
+					bestNeighbor = createCopySolutionList(firstNeighbor);
+				}
+				firstNeighbor.addStation(s);
+				for (Station t : stationList) {
+					if (!solution.getStations().contains(t)) {
+						StationList neighbor = solution;
+						neighbor.removeStation(s);
+						neighbor.addStation(t);
+						if (isViable(neighbor)
+								&& neighbor.getTotalCost().compareTo(
+										bestNeighbor.getTotalCost()) < 0) {
+							bestNeighbor = createCopySolutionList(neighbor);
+						}
+						neighbor.removeStation(t);
+						neighbor.addStation(s);
+					}
+				}
+			}
+		}
+		return bestNeighbor;
 	}
 
 	private StationList createCopySolutionList(StationList solution) {
@@ -104,29 +132,12 @@ public class Grasp {
 	}
 
 	private Station randomGreegyElement(List<Station> l) {
-		List<Station> stations = new ArrayList<Station>();
 
-		for (Station s : l) {
-			stations.add(s);
-			if (stations.size() >= K) {
-				break;
-			}
-		}
-
-		Collections.shuffle(stations);
-		l.remove(stations.get(0));
-		return stations.get(0);
+		return l.remove((int) (Math.random() * K % K));
 
 	}
 
 	private List<Station> buildRestrictCanditatesList(StationList solution) {
-
-		Collections.sort(stationList, new Comparator<Station>() {
-			@Override
-			public int compare(Station o1, Station o2) {
-				return o1.getPonderation().compareTo(o2.getPonderation());
-			}
-		});
 
 		List<Station> stations = new ArrayList<Station>();
 

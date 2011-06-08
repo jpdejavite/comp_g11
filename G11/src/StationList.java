@@ -66,6 +66,12 @@ public class StationList {
 			totalCost = totalCost.add(s.getCost());
 		}
 	}
+	
+	public void removeStation(Station s) {
+		if(stations.remove(s)) {
+			totalCost = totalCost.subtract(s.getCost());
+		}
+	}
 
 
 }
