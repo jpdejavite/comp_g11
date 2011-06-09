@@ -14,20 +14,30 @@ public class Grasp {
 	private boolean isLocalMin;
 	private final StationList worstSolution;
 
-	private final static int K = 30;
-	private final static int L = 5;
+	private int RANDOM_LIMIT = 30;
+	private int MAX_NEIGHBORS_REMOVE = 10;
+	private int MAX_NEIGHBORS_ADD = 10;
+	private long TIME_LIMIT = 55000;
+	private long LOCAL_TIME_LIMIT = 55000;
 
 	public Grasp(Integer pointsNumber, Integer stationsNumber,
-			List<Station> stationList, long msBegin, StationList worstSolution) {
+			List<Station> stationList, long msBegin, StationList worstSolution,
+			int randomLimit, int maxRemove, int maxAdd, long timeLimit,
+			long localLimit) {
 		this.setPointsNumber(pointsNumber);
 		this.setStationsNumber(stationsNumber);
 		this.setStationList(stationList);
 		this.msBegin = msBegin;
 		this.worstSolution = worstSolution;
+		this.RANDOM_LIMIT = randomLimit;
+		this.MAX_NEIGHBORS_REMOVE = maxRemove;
+		this.MAX_NEIGHBORS_ADD = maxAdd;
+		this.TIME_LIMIT = timeLimit;
+		this.LOCAL_TIME_LIMIT = localLimit;
 	}
 
 	public StationList execute() {
-		int i = 0, j = 0;
+		// int i = 0, j = 0;
 		StationList solution = new StationList();
 		StationList starSolution = worstSolution;
 
@@ -39,17 +49,17 @@ public class Grasp {
 		});
 
 		while (System.currentTimeMillis() - msBegin < 50000) {
-			j++;
+			// j++;
 			solution = randomGreedySolution();
 			solution = localSearch(solution);
 			if (solution.getTotalCost().compareTo(starSolution.getTotalCost()) < 0) {
-				i++;
+				// i++;
 				starSolution = solution;
 			}
 		}
-
-		System.out.println("j: " + j);
-		System.out.println("i: " + i);
+		//
+		// System.out.println("j: " + j);
+		// System.out.println("i: " + i);
 
 		return starSolution;
 	}
@@ -58,18 +68,19 @@ public class Grasp {
 		isLocalMin = false;
 		StationList starStationList = solution;
 		long localBegin = System.currentTimeMillis();
-		
-		while (System.currentTimeMillis() - msBegin < 50000
-				&& System.currentTimeMillis() - localBegin < 25000
+
+		while (System.currentTimeMillis() - msBegin < TIME_LIMIT
+				&& System.currentTimeMillis() - localBegin < LOCAL_TIME_LIMIT
 				&& !isLocalMin) {
-			//System.out.println(System.currentTimeMillis() - msBegin);
+			// System.out.println(System.currentTimeMillis() - msBegin);
 			StationList bestNeighbor = getBestNeighbor(starStationList);
 			if (bestNeighbor.getTotalCost().compareTo(
 					starStationList.getTotalCost()) < 0) {
 				starStationList = bestNeighbor;
-			//	System.out.println(bestNeighbor.getTotalCost());
+				// System.out.println(bestNeighbor.getTotalCost());
 			} else {
 				isLocalMin = true;
+				//System.out.println(bestNeighbor.getTotalCost());
 			}
 
 		}
@@ -79,7 +90,8 @@ public class Grasp {
 	private StationList getBestNeighbor(StationList solution) {
 		StationList bestNeighbor = worstSolution;
 
-		for (int i=stationList.size()-1, j=0; i>=0 && j<L ; i--) {
+		for (int i = stationList.size() - 1, j = 0; i >= 0
+				&& j < MAX_NEIGHBORS_REMOVE; i--) {
 			Station s = stationList.get(i);
 			if (solution.getStations().contains(s)) {
 				j++;
@@ -91,8 +103,11 @@ public class Grasp {
 					bestNeighbor = createCopySolutionList(firstNeighbor);
 				}
 				firstNeighbor.addStation(s);
-				for (Station t : stationList) {
+				for (int k = 0, l = 0; k < stationList.size()
+						&& l < MAX_NEIGHBORS_ADD; k++) {
+					Station t = stationList.get(k);
 					if (!solution.getStations().contains(t)) {
+						l++;
 						StationList neighbor = solution;
 						neighbor.removeStation(s);
 						neighbor.addStation(t);
@@ -133,7 +148,7 @@ public class Grasp {
 
 	private Station randomGreegyElement(List<Station> l) {
 
-		return l.remove((int) (Math.random() * K % K));
+		return l.remove((int) (Math.random() * RANDOM_LIMIT % RANDOM_LIMIT));
 
 	}
 
