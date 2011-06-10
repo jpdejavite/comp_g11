@@ -18,7 +18,7 @@ public class Test {
 		String[] MAX_NEIGHBORS_ADD = { "5", "50", "100" };
 		String[] TIME_LIMIT = { "55000" };
 		String[] LOCAL_TIME_LIMIT = { "15000", "25000", "55000" };
-		String[] FILES = { "3000", "4000", "5000" };
+		String[] FILES = { "5000" };
 		String prefix = "C:\\UNICAMP\\mc548\\trab\\instancia\\gigante";
 
 		for (int filesIndex = 0; filesIndex < FILES.length; filesIndex++) {
