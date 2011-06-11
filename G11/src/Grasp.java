@@ -80,7 +80,7 @@ public class Grasp {
 				// System.out.println(bestNeighbor.getTotalCost());
 			} else {
 				isLocalMin = true;
-				//System.out.println(bestNeighbor.getTotalCost());
+				// System.out.println(bestNeighbor.getTotalCost());
 			}
 
 		}
@@ -134,7 +134,6 @@ public class Grasp {
 
 	private StationList randomGreedySolution() {
 		StationList solution = new StationList();
-
 		List<Station> l = buildRestrictCanditatesList(solution);
 
 		while (!isViable(solution)) {
@@ -148,7 +147,8 @@ public class Grasp {
 
 	private Station randomGreegyElement(List<Station> l) {
 
-		return l.remove((int) (Math.random() * RANDOM_LIMIT % RANDOM_LIMIT));
+		return l.remove((int) ((Math.random() * RANDOM_LIMIT % RANDOM_LIMIT) % l
+				.size()));
 
 	}
 
