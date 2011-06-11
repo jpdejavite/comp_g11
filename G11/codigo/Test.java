@@ -10,18 +10,20 @@ public class Test {
 	 * @throws IOException
 	 */
 	public static void main(String[] a) throws IOException {
+		// Efetua os teste setando a saida padrao para o arquivo desejado
 		PrintStream out = new PrintStream(new FileOutputStream(new File(
 				"C:\\UNICAMP\\mc548\\trab\\instancia\\saidateste1")));
 		System.setOut(out);
-		String[] RANDOM_LIMIT = { "50" };
-		String[] MAX_NEIGHBORS_REMOVE = { "100" };
-		String[] MAX_NEIGHBORS_ADD = { "5"};
+		String[] RANDOM_LIMIT = { "5", "50", "100" };
+		String[] MAX_NEIGHBORS_REMOVE = { "5", "50", "100" };
+		String[] MAX_NEIGHBORS_ADD = { "5", "50", "100"};
 		String[] TIME_LIMIT = { "55000" };
-		String[] LOCAL_TIME_LIMIT = { "55000" };
+		String[] LOCAL_TIME_LIMIT = { "15000", "25000", "55000" };
 		String[] FILES = { "1000", "2000", "3000", "4000", "5000", "1000",
 				"2000", "3000", "4000", "5000" };
 		String prefix = "C:\\UNICAMP\\mc548\\trab\\instancia\\gigante";
 
+		// Roda o SaveWorld para cada combinacao possivel das entradas
 		for (int filesIndex = 0; filesIndex < FILES.length; filesIndex++) {
 			for (int localTimeLimitIndex = 0; localTimeLimitIndex < LOCAL_TIME_LIMIT.length; localTimeLimitIndex++) {
 				for (int maxNeighborsAddIndex = 0; maxNeighborsAddIndex < MAX_NEIGHBORS_ADD.length; maxNeighborsAddIndex++) {

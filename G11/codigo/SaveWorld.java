@@ -15,74 +15,66 @@ public class SaveWorld {
 	 */
 	public static void main(String[] args) {
 
+		// Verifica o numero correto de argumentos 1 ou 6
 		if (args.length != 1 && args.length != 6) {
 			System.out
-					.println("Usage: saveWorld path_arquivo (randomLimit) (maxRemove) (maxAdd) (timeLimit) (localLimit)");
+					.println("Usage: java SaveWorld path_arquivo (randomLimit) (maxRemove) (maxAdd) (timeLimit) (localLimit)");
 			return;
 		}
 
+		// Le a entrada
 		Grasp grasp = SaveWorld.readInput(args);
 
+		// Executa o GRASP
 		StationList solution = grasp.execute();
 
+		// Imprime a solucao
 		printSolution(solution);
 
 	}
 
 	private static void printSolution(StationList solution) {
-		System.out.print(solution.getTotalCost());
-		// TODO System.out.println("Valor: " + solution.getTotalCost());
-		// TODO System.out.println("Total: " + solution.getStations().size());
+		System.out.println("Valor: " + solution.getTotalCost());
+		System.out.println("Total: " + solution.getStations().size());
 
-		// Collections.sort(solution.getStations(), new Comparator<Station>() {
-		// @Override
-		// public int compare(Station o1, Station o2) {
-		// if (o1.getNumber() > o2.getNumber()) {
-		// return 1;
-		// } else if (o1.getNumber() < o2.getNumber()) {
-		// return -1;
-		// } else {
-		// return 0;
-		// }
-		// }
-		// });
-		// TODO
-		// for (Station s : solution.getStations()) {
-		// System.out.println("S_" + s.getNumber());
-		// }
-		// System.out.println(System.currentTimeMillis() - msBegin);
+		for (Station s : solution.getStations()) {
+			System.out.println("S_" + s.getNumber());
+		}
 	}
 
 	public static Grasp readInput(String[] args) {
 		try {
-			// Open the file that is the first
-			// command line parameter
+			// Abre o arquivo e le linha por linha
 			FileInputStream fstream = new FileInputStream(new File(args[0]));
-			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
 
+			// Pega o numero de pontos
 			strLine = br.readLine();
-			Integer pointsNumber = Integer.valueOf(strLine.substring(2, strLine
-					.length()));
+			Integer pointsNumber = Integer.valueOf(strLine.substring(2,
+					strLine.length()));
 
+			// Pega o numero de torres
 			strLine = br.readLine();
 			Integer stationsNumber = Integer.valueOf(strLine.substring(2,
 					strLine.length()));
 
+			// Le cada uma das torres e seus pontos
 			StationList worstSolution = new StationList();
 			List<Station> stationList = new ArrayList<Station>();
 			int i = 1;
-			// Read File Line By Line
 			while ((strLine = br.readLine()) != null) {
 				Station s = Station.readStation(strLine, i++);
 				worstSolution.addStation(s);
 				stationList.add(s);
 			}
 
-			// Close the input stream
+			// Fecha arquivo
 			in.close();
+
+			// Gera a instancia do GRASP com os argumentos padrao ou com os
+			// argumentos de entrada (usado para testes)
 			if (args.length < 6) {
 				return new Grasp(pointsNumber, stationsNumber, stationList,
 						System.currentTimeMillis(), worstSolution, 50, 100, 5,
@@ -97,11 +89,9 @@ public class SaveWorld {
 								.longValue());
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
