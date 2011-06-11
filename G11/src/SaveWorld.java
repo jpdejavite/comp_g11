@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class SaveWorld {
 
 	/**
 	 * @param args
@@ -21,7 +21,7 @@ public class Main {
 			return;
 		}
 
-		Grasp grasp = Main.readInput(args);
+		Grasp grasp = SaveWorld.readInput(args);
 
 		StationList solution = grasp.execute();
 
@@ -31,8 +31,8 @@ public class Main {
 
 	private static void printSolution(StationList solution) {
 		System.out.print(solution.getTotalCost());
-		//TODO System.out.println("Valor: " + solution.getTotalCost());
-		//TODO System.out.println("Total: " + solution.getStations().size());
+		// TODO System.out.println("Valor: " + solution.getTotalCost());
+		// TODO System.out.println("Total: " + solution.getStations().size());
 
 		// Collections.sort(solution.getStations(), new Comparator<Station>() {
 		// @Override
@@ -46,10 +46,10 @@ public class Main {
 		// }
 		// }
 		// });
-		//TODO
-//		for (Station s : solution.getStations()) {
-//			System.out.println("S_" + s.getNumber());
-//		}
+		// TODO
+		// for (Station s : solution.getStations()) {
+		// System.out.println("S_" + s.getNumber());
+		// }
 		// System.out.println(System.currentTimeMillis() - msBegin);
 	}
 
@@ -85,7 +85,7 @@ public class Main {
 			in.close();
 			if (args.length < 6) {
 				return new Grasp(pointsNumber, stationsNumber, stationList,
-						System.currentTimeMillis(), worstSolution, 30, 10, 10,
+						System.currentTimeMillis(), worstSolution, 50, 100, 5,
 						55000, 55000);
 			} else {
 				return new Grasp(pointsNumber, stationsNumber, stationList,
